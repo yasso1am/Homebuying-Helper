@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Divider,
   Container,
   Table,
   Header,
@@ -9,15 +10,15 @@ import { setHeaders } from '../reducers/headers'
 import axios from 'axios'
 
 class HouseDisplay extends React.Component {
-  state = { houses: [], colors: ['red', 'blue'] }
+  state = { houses: [] }
 
   componentDidMount(){
     const { dispatch } = this.props
     axios.get('api/houses')
-    .then( res => 
+    .then( res => {
       this.setState({houses: res.data})
-      // dispatch(setHeaders(res.headers))
-    )
+      dispatch(setHeaders(res.headers))
+    })
   }
 
   houseName = (houses) => {
@@ -46,7 +47,7 @@ class HouseDisplay extends React.Component {
 
   purchasePrice = (houses) => {
     return houses.map (house =>
-      <Table.Cell> ${house.purchase_price} </Table.Cell>
+      <Table.Cell> ${house.purchase_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
     )
   }
 
@@ -58,13 +59,13 @@ class HouseDisplay extends React.Component {
   
   downPaymentAmount = (houses) => {
     return houses.map(house => 
-    <Table.Cell> ${house.down_payment / 100 * house.purchase_price} </Table.Cell>
+    <Table.Cell> ${(house.down_payment / 100 * house.purchase_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
     )
   }
 
   loanAmount = (houses) => {
     return houses.map(house =>
-    <Table.Cell> ${house.purchase_price - (house.down_payment / 100 * house.purchase_price)} </Table.Cell>
+    <Table.Cell> ${(house.purchase_price - (house.down_payment / 100 * house.purchase_price)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
     )
   }
 
@@ -80,61 +81,67 @@ class HouseDisplay extends React.Component {
       const pmiMonthly = loan_amount * 0.9 / 100 / house.payments_per_year
         return <Table.Cell> ${pmiMonthly} </Table.Cell>
      }
-    return <Table.Cell> No PMI </Table.Cell>
+    return <Table.Cell disabled> No PMI </Table.Cell>
     })
   }
-  
-  render() {
+  homeTable = () => {
     const { houses } = this.state
+      return (
+        <Table definition basic="very" unstackable compact>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell width={3}/>
+              { this.houseName(houses) }
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell> Life of Loan (years) </Table.Cell>
+              { this.loanTerm(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Number of Payments/Year </Table.Cell>
+              { this.paymentsPerYear(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Total Monthly Payments </Table.Cell>
+              { this.totalMonthlyPayments(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Purchase Price </Table.Cell>
+            { this.purchasePrice(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Down Payment Percentage </Table.Cell>
+              { this.downPaymentPercent(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Down Payment Amount </Table.Cell>
+              { this.downPaymentAmount(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Loan Amount </Table.Cell>
+              { this.loanAmount(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Interest Rate </Table.Cell> 
+              { this.interestRate(houses) }
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> PMI Monthly (calc. @ 0.9% of loan/payment) </Table.Cell>
+              { this.pmiCalc(houses) }
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    )
+}
+  render() {
     return(
       <Container>
+      <Divider hidden />
         <Header as="h1" textAlign="center"> Home View </Header>
-        <Table basic="very" striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell width={5}/>
-                { this.houseName(houses) }
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell> Life of Loan (years) </Table.Cell>
-                { this.loanTerm(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Number of Payments/Year </Table.Cell>
-                { this.paymentsPerYear(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Total Monthly Payments </Table.Cell>
-                { this.totalMonthlyPayments(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Purchase Price </Table.Cell>
-               { this.purchasePrice(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Down Payment Percentage </Table.Cell>
-                { this.downPaymentPercent(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Down Payment Amount </Table.Cell>
-                { this.downPaymentAmount(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Loan Amount </Table.Cell>
-                { this.loanAmount(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> Interest Rate </Table.Cell> 
-                { this.interestRate(houses) }
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell> PMI Monthly (calc. @ 0.9% of loan/payment) </Table.Cell>
-                { this.pmiCalc(houses) }
-            </Table.Row>
-          </Table.Body>
-        </Table>
+      <Divider hidden />
+       { this.homeTable() }
       </Container>
     )
   }

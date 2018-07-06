@@ -3,6 +3,7 @@ import { Menu } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleLogout } from '../reducers/user';
+import HouseDisplay from './HouseDisplay'
 
 class NavBar extends Component {
   rightNavs = () => {
@@ -36,6 +37,9 @@ class NavBar extends Component {
         <Menu pointing secondary>
           <Link to='/'>
             <Menu.Item name='home' />
+          </Link>
+          <Link to='/house'>
+            <Menu.Item name="House Display" />
           </Link>
           { this.rightNavs() }
         </Menu>
