@@ -37,12 +37,12 @@ class Api::HousesController < ApplicationController
 
     def house_params
       params.require(:house).permit(
-        :name, 
-        :purchase_price, 
-        :loan_term, 
-        :down_payment, 
-        :interest_rate, 
-        :payments_per_year,
+        :name, *
+        :purchase_price, *
+        :loan_term, *
+        :down_payment, *
+        :interest_rate, *
+        :payments_per_year, *
         :pmi,
         :insurance_monthly,
         :property_tax_annual,
