@@ -45,6 +45,12 @@ class HouseDisplay extends React.Component {
     )
   }
 
+  space = (houses) => {
+    return houses.map ( house =>
+      <Table.Cell disabled> - </Table.Cell>
+    )
+  }
+
   purchasePrice = (houses) => {
     return houses.map (house =>
       <Table.Cell> ${house.purchase_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
@@ -108,6 +114,10 @@ class HouseDisplay extends React.Component {
               { this.totalMonthlyPayments(houses) }
           </Table.Row>
           <Table.Row>
+            <Table.Cell disabled> </Table.Cell>
+            { this.space(houses)}
+          </Table.Row>
+          <Table.Row>
             <Table.Cell> Purchase Price </Table.Cell>
             { this.purchasePrice(houses) }
           </Table.Row>
@@ -131,10 +141,15 @@ class HouseDisplay extends React.Component {
             <Table.Cell> PMI Monthly (calc. @ 0.9% of loan/payment) </Table.Cell>
               { this.pmiCalc(houses) }
           </Table.Row>
+          <Table.Row>
+            {/* { this.mortgage(houses)} */}
+          </Table.Row>
         </Table.Body>
       </Table>
     )
 }
+
+
   render() {
     return(
       <Container>
