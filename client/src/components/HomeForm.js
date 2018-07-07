@@ -6,7 +6,7 @@ import {
 } from 'semantic-ui-react'
 
 class HomeForm extends React.Component {
-  state = { name: '', loan_term: null, payments_per_year: 12 }
+  state = { name: '', loan_term: null, payments_per_year: null }
 
   handleSubmit = (e) => {
     e.preventDefault();
