@@ -10,11 +10,14 @@ class Api::HousesController < ApplicationController
   end
 
   def create
-    house = House.new(house_params)
-      if house.save
-        render json: house
+    math_house = House.do_math(house_params)
+    binding.pry
+    new_house = current_user.houses.create(math_house)
+    binding.pry
+       if new_house.save
+        render json: new_house
       else
-        render json: {errors: house.errors.full_messages}, status: 422
+        render json: {errors: new_house.errors.full_messages}, status: 422
       end
   end
 
@@ -37,12 +40,13 @@ class Api::HousesController < ApplicationController
 
     def house_params
       params.require(:house).permit(
-        :name, *
-        :purchase_price, *
-        :loan_term, *
-        :down_payment, *
-        :interest_rate, *
-        :payments_per_year, *
+        :name,
+        :purchase_price,
+        :loan_term,
+        :down_payment_percent,
+        :down_payment_amount,
+        :interest_rate,
+        :payments_per_year,
         :pmi,
         :insurance_monthly,
         :property_tax_annual,

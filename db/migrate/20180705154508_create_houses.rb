@@ -4,12 +4,15 @@ class CreateHouses < ActiveRecord::Migration[5.1]
       t.integer :purchase_price
       t.string :name
       t.integer :loan_term
-      t.float :down_payment
+      t.integer :down_payment_amount
+      t.float :down_payment_percent
+      t.integer :loan_amount
       t.float :interest_rate
       t.integer :payments_per_year
       t.float :pmi
       t.integer :insurance_monthly
       t.integer :property_tax_annual
+      t.integer :propert_tax_monthly
       t.integer :hoa_monthly
       t.float :total_interest
       t.float :total_principal_interest

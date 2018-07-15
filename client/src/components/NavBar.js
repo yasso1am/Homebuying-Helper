@@ -5,21 +5,40 @@ import { connect } from 'react-redux';
 import { handleLogout } from '../reducers/user';
 
 class NavBar extends Component {
+  state = {activeItem: ''}
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  
   rightNavs = () => {
+    const { activeItem } = this.state
     const { user, dispatch, history } = this.props;
 
     if (user.id) {
       return (
-        <Menu.Menu position='right'>
+        <Menu.Menu position="right">
           <Menu.Item
             name='Logout'
             onClick={() => dispatch(handleLogout(history))}
           />
+           <Link to='/house'>
+            <Menu.Item 
+              name='Your Homes' 
+              active={activeItem === 'Your Homes'} 
+              onClick={this.handleItemClick}
+            />   
+          </Link>
+          <Link to='/homeform'>
+            <Menu.Item 
+              name='Add A Home'          
+              active={activeItem === 'Add A Home'}
+              onClick={this.handleItemClick}
+            /> 
+          </Link>
         </Menu.Menu>
       );
     }
     return (
-      <Menu.Menu position='right'>
+      <Menu.Menu position="right">
         <Link to='/register'>
           <Menu.Item name='Register' />
         </Link>
@@ -33,15 +52,9 @@ class NavBar extends Component {
   render() {
     return (
       <div>
-        <Menu pointing secondary>
+        <Menu fluid pointing secondary>
           <Link to='/'>
             <Menu.Item name='home' />
-          </Link>
-          <Link to='/house'>
-            <Menu.Item name="House Display" />
-          </Link>
-          <Link to='/homeform'>
-            <Menu.Item name="Home Form" />
           </Link>
           { this.rightNavs() }
         </Menu>

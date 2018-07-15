@@ -38,11 +38,11 @@ export const handleLogout = history => {
   return (dispatch) => {
     axios.delete('/api/auth/sign_out')
       .then(res => {
-        const { headers } = res;
+        const { headers } = res
         dispatch(setHeaders(headers));
         dispatch(logout());
         dispatch(setFlash('Logged out successfully!', 'green'));
-        history.push('/login');
+        history.push('/');
       })
       .catch(res => {
         let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']
@@ -87,8 +87,8 @@ export const validateToken = (callBack = f => f) => {
     const headers = axios.defaults.headers.common;
     axios.get('/api/auth/validate_token', headers)
       .then(res => {
-        const user = res.data.data;
         dispatch(setHeaders(res.headers));
+        const user = res.data.data;
         dispatch(login(user));
         callBack()
       })

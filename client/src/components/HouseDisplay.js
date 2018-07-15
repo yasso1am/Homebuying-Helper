@@ -15,81 +15,81 @@ class HouseDisplay extends React.Component {
   componentDidMount(){
     const { dispatch } = this.props
     axios.get('api/houses')
-    .then( res => {
-      this.setState({houses: res.data})
-      dispatch(setHeaders(res.headers))
+      .then( res => {
+        dispatch(setHeaders(res.headers))
+        this.setState({houses: res.data})
     })
   }
 
   houseName = (houses) => {
     return houses.map( (house, i) => 
-      <Table.HeaderCell> {house.name} </Table.HeaderCell>
+      <Table.HeaderCell key={i}> {house.name} </Table.HeaderCell>
     )
   }
 
   loanTerm = (houses) => {
-    return houses.map ( house =>
-      <Table.Cell> { house.loan_term } years </Table.Cell> 
+    return houses.map ( (house, i) =>
+      <Table.Cell key={i}> { house.loan_term } years </Table.Cell> 
     )
   }
 
   paymentsPerYear = (houses) => {
-    return houses.map ( house => 
-      <Table.Cell> { house.payments_per_year } </Table.Cell>
+    return houses.map ( (house, i) => 
+      <Table.Cell key={i}> { house.payments_per_year } </Table.Cell>
     )
   }
 
   totalMonthlyPayments = (houses) => {
-    return houses.map ( house =>
-      <Table.Cell> { house.payments_per_year * house.loan_term } </Table.Cell>
+    return houses.map ( (house, i) =>
+      <Table.Cell key={i}> { house.payments_per_year * house.loan_term } </Table.Cell>
     )
   }
 
   space = (houses) => {
-    return houses.map ( house =>
-      <Table.Cell disabled> - </Table.Cell>
+    return houses.map ( (house, i) =>
+      <Table.Cell key={i} disabled> - </Table.Cell>
     )
   }
 
   purchasePrice = (houses) => {
-    return houses.map (house =>
-      <Table.Cell> ${house.purchase_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
+    return houses.map ((house, i) =>
+      <Table.Cell key={i}> ${house.purchase_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
     )
   }
 
   downPaymentPercent = (houses) => {
-    return houses.map (house =>
-    <Table.Cell> {house.down_payment }% </Table.Cell> 
+    return houses.map ((house, i) =>
+    <Table.Cell key={i}> {house.down_payment_percent }% </Table.Cell> 
     )
   }
   
   downPaymentAmount = (houses) => {
-    return houses.map(house => 
-    <Table.Cell> ${(house.down_payment / 100 * house.purchase_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
+    return houses.map((house, i) => 
+    <Table.Cell key={i}> ${house.down_payment_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
     )
   }
 
   loanAmount = (houses) => {
-    return houses.map(house =>
-    <Table.Cell> ${(house.purchase_price - (house.down_payment / 100 * house.purchase_price)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
+    return houses.map((house, i) =>
+    <Table.Cell key={i}> ${house.loan_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Table.Cell>
     )
   }
 
   interestRate = (houses) => {
-    return houses.map(house =>
-    <Table.Cell> {house.interest_rate }% </Table.Cell>
+    return houses.map((house, i) =>
+    <Table.Cell key={i}> {house.interest_rate }% </Table.Cell>
     )
   }
+
   pmiCalc = (houses) => {
-    return houses.map(house => {
-     if (house.down_payment < 20) {
-      const loan_amount = house.purchase_price - (house.down_payment / 100 * house.purchase_price)
-      const pmiMonthly = loan_amount * 0.9 / 100 / house.payments_per_year
-        return <Table.Cell> ${pmiMonthly} </Table.Cell>
-     }
-    return <Table.Cell disabled> No PMI </Table.Cell>
-    })
+    return houses.map((house, i) => {
+    if (house.pmi === null)
+      return <Table.Cell disabled key={i}> No PMI </Table.Cell>
+    return <Table.Cell key={i}> ${house.pmi} </Table.Cell>
+      }
+    )
   }
+
   homeTable = () => {
     const { houses } = this.state
       return (

@@ -1,8 +1,8 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import { validateToken } from '../reducers/user';
+import React from "react";
+import { connect } from "react-redux";
+import { validateToken } from "../reducers/user";
 
-class FetchUser extends Component {
+class FetchUser extends React.Component {
   state = { loaded: false };
 
   componentDidMount() {
@@ -17,7 +17,7 @@ class FetchUser extends Component {
 
   loaded = () => {
     this.setState({ loaded: true });
-  }
+  };
 
   render() {
     return this.state.loaded ? this.props.children : null;
