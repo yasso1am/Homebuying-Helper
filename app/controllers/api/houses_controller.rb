@@ -11,9 +11,7 @@ class Api::HousesController < ApplicationController
 
   def create
     math_house = House.do_math(house_params)
-    binding.pry
     new_house = current_user.houses.create(math_house)
-    binding.pry
        if new_house.save
         render json: new_house
       else
@@ -41,22 +39,22 @@ class Api::HousesController < ApplicationController
     def house_params
       params.require(:house).permit(
         :name,
-        :purchase_price,
         :loan_term,
+        :purchase_price,
         :down_payment_percent,
-        :down_payment_amount,
         :interest_rate,
         :payments_per_year,
-        :pmi,
-        :insurance_monthly,
         :property_tax_annual,
+        :property_tax_monthly,
         :hoa_monthly,
-        :total_interest,
+        :insurance_monthly,
+        :down_payment_amount,
+        :loan_amount,
+        :pmi,
+        :monthly_principal_interest,
+        :monthly_payment_total,
         :total_principal_interest,
-        :total_monthly,
-        :move_in_price,
-        :closing_cost,
-        :discount_points,
+        :total_interest,
         :user_id
         )
     end

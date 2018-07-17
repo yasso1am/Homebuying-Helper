@@ -16,17 +16,15 @@ class NavBar extends Component {
     if (user.id) {
       return (
         <Menu.Menu position="right">
-          <Menu.Item
-            name='Logout'
-            onClick={() => dispatch(handleLogout(history))}
-          />
-           <Link to='/house'>
-            <Menu.Item 
-              name='Your Homes' 
-              active={activeItem === 'Your Homes'} 
-              onClick={this.handleItemClick}
-            />   
-          </Link>
+           
+            <Link to='/houses'>
+              <Menu.Item 
+                name='Your Homes' 
+                active={activeItem === 'Your Homes'} 
+                onClick={this.handleItemClick}
+              />   
+            </Link>
+
           <Link to='/homeform'>
             <Menu.Item 
               name='Add A Home'          
@@ -34,6 +32,12 @@ class NavBar extends Component {
               onClick={this.handleItemClick}
             /> 
           </Link>
+         
+          <Menu.Item
+            name='Logout'
+            onClick={() => dispatch(handleLogout(history))}
+          />
+
         </Menu.Menu>
       );
     }
@@ -42,9 +46,11 @@ class NavBar extends Component {
         <Link to='/register'>
           <Menu.Item name='Register' />
         </Link>
+        
         <Link to='/login'>
           <Menu.Item name='Login' />
         </Link>
+
       </Menu.Menu>
     );
   }

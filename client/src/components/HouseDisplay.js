@@ -83,17 +83,45 @@ class HouseDisplay extends React.Component {
 
   pmiCalc = (houses) => {
     return houses.map((house, i) => {
-    if (house.pmi === null)
+    if (house.pmi === 0)
       return <Table.Cell disabled key={i}> No PMI </Table.Cell>
     return <Table.Cell key={i}> ${house.pmi} </Table.Cell>
       }
     )
   }
 
+  insMonth = (houses) => {
+    return houses.map( (house, i) => 
+      <Table.Cell key={i}> ${house.insurance_monthly} </Table.Cell>
+    )
+  }
+
+  hoa = (houses) => {
+    return houses.map( (house, i) => {
+    if (house.hoa === 0 )
+      return <Table.Cell disabled> key={i}> No HOA Fees </Table.Cell>
+    return <Table.Cell key={i}> ${house.hoa_monthly} </Table.Cell>
+      }
+    )
+  }
+
+  monthlyPI = (houses) => {
+    return houses.map( (house, i) =>
+      <Table.Cell key={i}> ${house.monthly_principal_interest}</Table.Cell>
+    )
+  }
+
+  propTaxMonth = (houses) => {
+    return houses.map( (house, i) => 
+      <Table.Cell key={i}> ${house.property_tax_monthly} </Table.Cell>
+    )
+  }
+  
+
   homeTable = () => {
     const { houses } = this.state
       return (
-        <Table definition basic="very" unstackable compact>
+        <Table definition basic="very" striped unstackable compact>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell width={3}/>
@@ -138,11 +166,28 @@ class HouseDisplay extends React.Component {
               { this.interestRate(houses) }
           </Table.Row>
           <Table.Row>
+            <Table.Cell disabled> </Table.Cell>
+            { this.space(houses)}
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Monthly Principal & Interest </Table.Cell>
+              { this.monthlyPI(houses)}
+          </Table.Row>
+          <Table.Row>
             <Table.Cell> PMI Monthly (calc. @ 0.9% of loan/payment) </Table.Cell>
               { this.pmiCalc(houses) }
           </Table.Row>
           <Table.Row>
-            {/* { this.mortgage(houses)} */}
+            <Table.Cell> Monthly Homeowners Insurance </Table.Cell>
+              { this.insMonth(houses)}
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Monthly HOA </Table.Cell>
+              { this.hoa(houses)}
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell> Monthly Property Tax </Table.Cell>
+              { this.propTaxMonth(houses)}
           </Table.Row>
         </Table.Body>
       </Table>
@@ -151,12 +196,13 @@ class HouseDisplay extends React.Component {
 
 
   render() {
+    const { houses } = this.state
     return(
       <Container>
       <Divider hidden />
         <Header as="h1" textAlign="center"> Home View </Header>
       <Divider hidden />
-       { this.homeTable() }
+      { houses.length >= 1 ? this.homeTable() : <Header as="h3" textAlign="center"> Please add a home! </Header> }
       </Container>
     )
   }

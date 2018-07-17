@@ -3,7 +3,6 @@ import {
   Header,
   Button,
   Sidebar,
-  Container,
 } from 'semantic-ui-react';
 import styled from 'styled-components'
 import HomeForm from './HomeForm'

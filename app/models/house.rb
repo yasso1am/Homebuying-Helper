@@ -5,8 +5,8 @@ class House < ApplicationRecord
     name = house[:name]
     loan_term = house[:loan_term].to_i
     purchase_price = house[:purchase_price].to_i
-    down_payment_percent = house[:down_payment_percent].to_f
-    interest_rate = house[:interest_rate].to_f
+    down_payment_percent = house[:down_payment_percent].to_f.round(2)
+    interest_rate = house[:interest_rate].to_f.round(2)
     payments_per_year = house[:payments_per_year].to_i
     property_tax_annual = house[:property_tax_annual].to_i
     property_tax_monthly = (property_tax_annual / 12)
@@ -19,8 +19,17 @@ class House < ApplicationRecord
     if down_payment_percent < 20
       pmi = (loan_amount * 0.9 / 100 / payments_per_year)
     else
-      pmi = nil
+      pmi = 0
     end
+
+    # total_interest = (total_principal_interest - loan_amount)
+    n = (loan_term * payments_per_year)
+    @i = (interest_rate / 100 / payments_per_year)
+    discount_factor = (((1+@i)**n)-1) / (@i*(1+@i)**n)
+    monthly_principal_interest =  (loan_amount / discount_factor)
+    monthly_payment_total = ( hoa_monthly + pmi + monthly_principal_interest + insurance_monthly + property_.tax_monthly)
+    total_principal_interest = (n * monthly_principal_interest)
+    total_interest = (total_principal_interest - loan_amount)
     
 
     return new_house = {
@@ -38,6 +47,10 @@ class House < ApplicationRecord
         down_payment_amount: down_payment_amount,
         loan_amount: loan_amount,
         pmi: pmi,
+        monthly_principal_interest: monthly_principal_interest,
+        monthly_payment_total: monthly_payment_total,
+        total_principal_interest: total_principal_interest,
+        total_interest: total_interest
     }
   end
 end

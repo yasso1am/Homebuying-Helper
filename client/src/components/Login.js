@@ -41,6 +41,7 @@ class Login extends Component {
               id='password'
               value={password}
               placeholder='Password'
+              autoComplete="password"
               type='password'
               onChange={this.handleChange}
             />

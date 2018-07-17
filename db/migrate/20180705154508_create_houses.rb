@@ -1,22 +1,23 @@
 class CreateHouses < ActiveRecord::Migration[5.1]
   def change
     create_table :houses do |t|
-      t.integer :purchase_price
       t.string :name
+      t.integer :payments_per_year
       t.integer :loan_term
+      t.integer :purchase_price
+      t.integer :loan_amount
       t.integer :down_payment_amount
       t.float :down_payment_percent
-      t.integer :loan_amount
+      t.integer :pmi
       t.float :interest_rate
-      t.integer :payments_per_year
-      t.float :pmi
       t.integer :insurance_monthly
       t.integer :property_tax_annual
-      t.integer :propert_tax_monthly
+      t.integer :property_tax_monthly
       t.integer :hoa_monthly
-      t.float :total_interest
-      t.float :total_principal_interest
-      t.integer :total_monthly
+      t.integer :monthly_principal_interest
+      t.integer :monthly_payment_total
+      t.integer :total_interest
+      t.integer :total_principal_interest
       t.integer :move_in_price
       t.integer :closing_cost
       t.integer :discount_points

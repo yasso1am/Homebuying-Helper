@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { setFlash } from './flash';
 import { setHeaders } from './headers';
+
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
