@@ -26,7 +26,7 @@ export const registerUser = (user, history) => {
     })
     .catch( res => {
       const messages =
-        res.response.data.errors.full_messages.map(message =>
+        res.response.data.errors.map(message =>
           <div>{message}</div>);
         const { headers } = res;
         dispatch(setHeaders(headers));
@@ -78,6 +78,7 @@ export const handleLogin = (user, history) => {
         const { headers } = res;
         dispatch(setHeaders(headers));
         dispatch(setFlash(messages, 'red'));
+        history.push('/');
       });
   };
 };

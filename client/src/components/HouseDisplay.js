@@ -1,5 +1,7 @@
 import React from 'react'
 import {
+  Button,
+  Icon,
   Divider,
   Container,
   Table,
@@ -7,6 +9,7 @@ import {
 } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { setHeaders } from '../reducers/headers'
+import { setFlash } from '../reducers/flash'
 import axios from 'axios'
 
 class HouseDisplay extends React.Component {
@@ -14,16 +17,26 @@ class HouseDisplay extends React.Component {
 
   componentDidMount(){
     const { dispatch } = this.props
-    axios.get('api/houses')
+    axios.get('/api/houses')
       .then( res => {
         dispatch(setHeaders(res.headers))
         this.setState({houses: res.data})
+    })
+    .catch( res => {
+      dispatch(setHeaders(headers));
+      const messages =
+        res.response.data.errors.map(message =>
+          <div>{message}</div>);
+      const { headers } = res;
+        dispatch(setFlash(messages, 'red'));
     })
   }
 
   houseName = (houses) => {
     return houses.map( (house, i) => 
-      <Table.HeaderCell key={i}> {house.name} </Table.HeaderCell>
+      <Table.HeaderCell key={i}> 
+        {house.name} 
+      </Table.HeaderCell>
     )
   }
 

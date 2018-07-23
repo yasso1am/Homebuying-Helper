@@ -31,8 +31,14 @@ class HomeForm extends React.Component {
       dispatch(setHeaders(res.headers))
       dispatch(setFlash('Home added!', 'green'))
     })
-    
-    
+    .catch( res => {
+      dispatch(setHeaders(headers));
+      const messages =
+        res.response.data.errors.map(message =>
+          <div>{message}</div>);
+      const { headers } = res;
+        dispatch(setFlash(messages, 'red'));
+    })
   }
 
   handleChange = (e) => {

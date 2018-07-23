@@ -27,7 +27,7 @@ class House < ApplicationRecord
     @i = (interest_rate / 100 / payments_per_year)
     discount_factor = (((1+@i)**n)-1) / (@i*(1+@i)**n)
     monthly_principal_interest =  (loan_amount / discount_factor)
-    monthly_payment_total = ( hoa_monthly + pmi + monthly_principal_interest + insurance_monthly + property_.tax_monthly)
+    monthly_payment_total = ( hoa_monthly + pmi + monthly_principal_interest + insurance_monthly + property_tax_monthly)
     total_principal_interest = (n * monthly_principal_interest)
     total_interest = (total_principal_interest - loan_amount)
     
