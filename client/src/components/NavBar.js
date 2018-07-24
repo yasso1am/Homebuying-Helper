@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { 
   Menu,
   Image,
+  Header,
 } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -21,20 +22,18 @@ class NavBar extends Component {
       return(
         <div>
         <Menu.Menu position="left">
-        <Link to='/houses'>
           <Menu.Item 
+            as={Link} to="/houses"
             name='Your Homes' 
             active={activeItem === 'Your Homes'} 
             onClick={this.handleItemClick}
           />   
-        </Link>
-        <Link to='/homeform'>
           <Menu.Item 
+            as={Link} to="/homeform"
             name='Add A Home'          
             active={activeItem === 'Add A Home'}
             onClick={this.handleItemClick}
           /> 
-        </Link>
         </Menu.Menu>
       </div>
     )
@@ -56,14 +55,14 @@ class NavBar extends Component {
     }
     return (
       <Menu.Menu position="right">
-        <Link to='/register'>
-          <Menu.Item name='Register' />
-        </Link>
-        
-        <Link to='/login'>
-          <Menu.Item name='Login' />
-        </Link>
-
+          <Menu.Item 
+            as={Link} to="/register"
+            name='Register' 
+          />
+          <Menu.Item 
+            as={Link} to="/login"
+            name='Login' 
+          />
       </Menu.Menu>
     );
   }
@@ -72,25 +71,31 @@ class NavBar extends Component {
     const {activeItem} = this.state
     return (
       <div>
-        <Menu borderless fluid pointing secondary>
-          <Link to='/'>
-      <LogoStyle>
-        <Menu.Item
-          fitted={true}
+        <Menu 
+          size="small" 
+          borderless 
+          pointing 
+        >
+        <LogoStyle>
+        <Menu.Item 
+          as={Link} to="/"
+          fitted="vertically"
           name="Home"
           active={activeItem === 'Home'}
           onClick={this.handleItemClick}
         >
-          <Image 
-            floated="left" 
+          <Image
+            centered
             size="tiny" 
             src="https://previews.dropbox.com/p/thumb/AALOe574p8wwYXRmU7Ubr-4kQHduQzpThOT3a5RFNRyvhqqhhXL7dlLFe3R6hEMMIJlsa8c83EnGOGuclt2pEXkjP5PD2u2hhOxLo2TaUZpMqq9sJIj07_NEs8rKb7nyFXDFai1Bbkha9QTkplsQGQqJO7tIKFCDfQI14JS4tk6qO3r1lkl8dL8PRlGLztlBQQ-31Xnya-YydM5qjUglJOvZzhr2KL8zol4PvOLHaLb6sg/p.png?preserve_transparency=1&size=2048x1536&size_mode=3" 
             alt="The logo for the Home Helper website"
           />
-          Home Helper
+          <MyHeader
+          >
+            Home Helper
+          </MyHeader>
         </Menu.Item>
-      </LogoStyle>
-          </Link>
+        </LogoStyle>
           { this.leftNavs() }
           { this.rightNavs() }
         </Menu>
@@ -103,12 +108,17 @@ const mapStateToProps = state => {
   return { user: state.user };
 };
 
-const LogoStyle = styled.h1`
+const LogoStyle = styled.div`
 background-color: #E1E1E4;
 display: flex;
-font-size: 2.5em;
 flex-direction: column;
+align-items: center;
 justify-content: center;
+`
+
+const MyHeader = styled.div`
+font-size: 2.5em;
+font-weight: 500;
 `
 
 export default withRouter(connect(mapStateToProps)(NavBar));
