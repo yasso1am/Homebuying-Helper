@@ -5,7 +5,6 @@ import {
   Sidebar,
 } from 'semantic-ui-react';
 import styled from 'styled-components'
-import HomeForm from './HomeForm'
 
 class Home extends React.Component {
   state = { visible: false}

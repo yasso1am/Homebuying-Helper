@@ -1,7 +1,5 @@
 import React from 'react'
 import {
-  Button,
-  Icon,
   Divider,
   Container,
   Table,
@@ -23,11 +21,11 @@ class HouseDisplay extends React.Component {
         this.setState({houses: res.data})
     })
     .catch( res => {
-      dispatch(setHeaders(headers));
-      const messages =
-        res.response.data.errors.map(message =>
+      dispatch(setHeaders(res.headers));
+      const messages =res.response.data.errors
+      debugger
+        messages.map(message =>
           <div>{message}</div>);
-      const { headers } = res;
         dispatch(setFlash(messages, 'red'));
     })
   }

@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { setFlash } from './flash';
 import { setHeaders } from './headers';
-
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
@@ -26,7 +25,7 @@ export const registerUser = (user, history) => {
     })
     .catch( res => {
       const messages =
-        res.response.data.errors.map(message =>
+        res.response.data.errors.full_messages.map(message =>
           <div>{message}</div>);
         const { headers } = res;
         dispatch(setHeaders(headers));
@@ -39,11 +38,11 @@ export const handleLogout = history => {
   return (dispatch) => {
     axios.delete('/api/auth/sign_out')
       .then(res => {
-        const { headers } = res
+        const { headers } = res;
         dispatch(setHeaders(headers));
         dispatch(logout());
         dispatch(setFlash('Logged out successfully!', 'green'));
-        history.push('/');
+        history.push('/login');
       })
       .catch(res => {
         let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']
@@ -78,7 +77,6 @@ export const handleLogin = (user, history) => {
         const { headers } = res;
         dispatch(setHeaders(headers));
         dispatch(setFlash(messages, 'red'));
-        history.push('/');
       });
   };
 };
@@ -89,8 +87,8 @@ export const validateToken = (callBack = f => f) => {
     const headers = axios.defaults.headers.common;
     axios.get('/api/auth/validate_token', headers)
       .then(res => {
-        dispatch(setHeaders(res.headers));
         const user = res.data.data;
+        dispatch(setHeaders(res.headers));
         dispatch(login(user));
         callBack()
       })
